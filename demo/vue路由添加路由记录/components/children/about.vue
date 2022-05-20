@@ -1,5 +1,7 @@
 <template>
-  <h1>这是about组件</h1>
+  <div class="about">
+    <h1>这是about组件</h1>
+  </div>
 </template>
 
 <script type="text/javascript">

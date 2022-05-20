@@ -2,6 +2,10 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 
 const routes = [
     {
+      path:'/',
+      redirect: '/default',
+    },
+    {
       path: '/default',
       component: () => import('@/components/children/default'),
     },
@@ -21,12 +25,13 @@ const router = createRouter({
   history: createWebHashHistory(),
 });
 
-router.beforeEach((to, from, next) => {
-  if(to.path === '/default'){
-    return false
-  } else {
-    next();
-  }
+router.beforeEach((to, from) => {
+  // // route.matched
+  // console.log(to.matched);
+  // console.log(from.matched);
+
+  // route.redirectedFrom
+  console.log(to.redirectedFrom)
 })
 
 export default router;

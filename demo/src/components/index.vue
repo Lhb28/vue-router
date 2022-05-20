@@ -1,67 +1,67 @@
 <template>
   <div>
     <h1>这是index组件</h1>
-    <button @click="Go(`/home`)">去home组件</button><br />
-    <button @click="Go(`/detail/123`)">去detail123组件</button><br />
-    <button @click="Go(`/detail/456`)">去detail456组件</button><br />
-    <button @click="Go(`/about`)">去about组件</button><br />
+    <button @click="GO('/default')">default</button><br>
+    <button @click="GO('/home')">home</button><br>
+    <button @click="GO('/about')">about</button><br>
     <div class="container">
-      <transition name="fade">
-        <router-view></router-view>
-      </transition>
+      <router-view v-slot="{ Component, route}">
+        <keep-alive>
+          <component :is="Component"></component>
+        </keep-alive>
+      </router-view>
     </div>
   </div>
 </template>
 
 <script type="text/javascript">
+import { NavigationFailureType, isNavigationFailure } from 'vue-router';
 export default {
   name: "Index",
+  methods:{
+    GO(path){
+      this.$router.push(path).then(() => {
+        console.log("导航成功");
+      }).catch((failure) => {
+        console.log("导航失败");
+        if(isNavigationFailure(result, NavigationFailureType.aborted)){
+          console.log("导航出出现aborted错误了");
+        } else if(isNavigationFailure(result, NavigationFailureType.cancelled)){
+          console.log("导航出出现cancelled错误了");
+        } else if(isNavigationFailure(result, NavigationFailureType.duplicated)){
+          console.log("导航出出现duplicated错误了");
+        } else {
+          console.log(router.currentRoute.value.redirectedFrom);
+        }
+      })
+    }
+  }
 };
 </script>
 
-<script setup>
-import { useRouter } from "vue-router";
+// <script setup>
+// import { useRouter, NavigationFailureType, isNavigationFailure } from 'vue-router';
 
-const router = useRouter();
+// const router = useRouter();
 
-function Go(path) {
-  router.push(path);
-}
-</script>
+// async function GO(path){
+//   const result = await router.push(path);
+//   if(isNavigationFailure(result, NavigationFailureType.aborted)){
+//     console.log("导航出出现aborted错误了");
+//   } else if(isNavigationFailure(result, NavigationFailureType.cancelled)){
+//     console.log("导航出出现cancelled错误了");
+//   } else if(isNavigationFailure(result, NavigationFailureType.duplicated)){
+//     console.log("导航出出现duplicated错误了");
+//   } else {
+//     console.log(router.currentRoute.value.redirectedFrom);
+//   }
+// } 
+// </script>
 
 <style scoped>
 .container{
-  background:skyblue;
-  color:rgb(206, 117, 15);
+  background:aquamarine;
+  min-height: 500px;
+  overflow: auto;
 }
-
-.fade-enter-from{
-  /* background:#b67373; */
-  color:red;
-}
-
-.fade-enter-active{
-  transition: color 3s ease;
-}
-
-.fade-enter-to{
-  color:blue;
-}
-
-.fade-leave-from{
-  color: yellow;
-}
-
-.fade-leave-active{
-  transition: color 3s ease;
-}
-
-.fade-leave-to{
-  color:deeppink;
-}
-
-/* .fade-leave-to{
-  background: #19d2d8;
-  color:blue;
-} */
 </style>
